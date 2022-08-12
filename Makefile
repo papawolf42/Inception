@@ -6,7 +6,7 @@
 #    By: gunkim <gunkim@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/11 22:17:00 by gunkim            #+#    #+#              #
-#    Updated: 2022/08/12 18:33:46 by gunkim           ###   ########.fr        #
+#    Updated: 2022/08/12 23:27:24 by gunkim           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ END_COL = "\033[39m"
 
 NAME		:= inception
 SRCS		:= srcs
-DIR_VOLUME	:= $(PATH_HOST_VOL_MARIADB)
+DIR_VOLUME	:= $(PATH_HOST_VOL_MARIADB) $(PATH_HOST_VOL_WORDPRESS)
 
 
 
@@ -32,12 +32,16 @@ $(NAME) : $(DIR_VOLUME)
 $(PATH_HOST_VOL_MARIADB) :
 	mkdir -p $(PATH_HOST_VOL_MARIADB)
 
+$(PATH_HOST_VOL_WORDPRESS) :
+	mkdir -p $(PATH_HOST_VOL_WORDPRESS)
+
 clean:
 	docker compose -f $(SRCS)/docker-compose.yaml down
 
 fclean:
 	docker compose -f $(SRCS)/docker-compose.yaml down --rmi all
 	docker volume rm vol_mariadb
+	docker volume rm vol_wordpress
 
 
 

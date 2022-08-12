@@ -2,24 +2,41 @@ version: "3.9"
 
 services:
 
-  mariadb:
-    container_name: mariadb
-    image: mariadb
+  # mariadb:
+  #   container_name: mariadb
+  #   image: mariadb
+  #   build:
+  #     context: ./mariadb
+  #   expose:
+  #     - 3306
+  #   networks:
+  #     - my_net
+  #   volumes:
+  #     - vol_mariadb:${DB_PATH}
+  #   restart: always
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  #     - WORDPRESS_DATABASE=${WORDPRESS_DATABASE}
+  #     - WORDPRESS_DATABASE_USER=${WORDPRESS_DATABASE_USER}
+  #     - WORDPRESS_DATABASE_PASS=${WORDPRESS_DATABASE_PASS}
+
+  nginx:
+    container_name: nginx
+    image: nginx
     build:
-      context: ./mariadb
-    expose:
-      - 3306
+      context: ./nginx
+    ports:
+      - "443:443"
     networks:
       - my_net
     volumes:
-      - vol_mariadb:${DB_PATH}
+      - vol_wordpress:${WP_PATH}
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - WORDPRESS_DATABASE=${WORDPRESS_DATABASE}
       - WORDPRESS_DATABASE_USER=${WORDPRESS_DATABASE_USER}
       - WORDPRESS_DATABASE_PASS=${WORDPRESS_DATABASE_PASS}
-  # nginx:
   # wordpress:
 
 
@@ -32,6 +49,13 @@ volumes:
       type: none
       o: bind
       device: ${PATH_HOST_VOL_MARIADB}
+  vol_wordpress:
+    name: vol_wordpress
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PATH_HOST_VOL_WORDPRESS}
 
 #custom network
 networks:
