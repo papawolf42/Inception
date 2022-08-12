@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gunkim <gunkim@student.42seoul.kr>         +#+  +:+       +#+         #
+#    By: gunkim <gunkim@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/11 22:17:00 by gunkim            #+#    #+#              #
-#    Updated: 2022/08/12 09:29:17 by gunkim           ###   ########.fr        #
+#    Updated: 2022/08/12 18:33:46 by gunkim           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ END_COL = "\033[39m"
 NAME		:= inception
 SRCS		:= srcs
 DIR_VOLUME	:= $(PATH_HOST_VOL_MARIADB)
+
+
 
 .PHONY: all clean fclean
 
@@ -37,6 +39,8 @@ fclean:
 	docker compose -f $(SRCS)/docker-compose.yaml down --rmi all
 	docker volume rm vol_mariadb
 
+
+
 .PHONY: ls
 
 ls :
@@ -44,4 +48,3 @@ ls :
 	@docker ps -a
 	@echo $(YELLOW)"\n[docker images]"$(END_COL)
 	@docker images ls
-

@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 
 services:
 
@@ -14,7 +14,11 @@ services:
     volumes:
       - vol_mariadb:${DB_PATH}
     restart: always
-
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - WORDPRESS_DATABASE=${WORDPRESS_DATABASE}
+      - WORDPRESS_DATABASE_USER=${WORDPRESS_DATABASE_USER}
+      - WORDPRESS_DATABASE_PASS=${WORDPRESS_DATABASE_PASS}
   # nginx:
   # wordpress:
 
@@ -25,11 +29,9 @@ volumes:
     name: vol_mariadb
     driver: local
     driver_opts:
+      type: none
       o: bind
       device: ${PATH_HOST_VOL_MARIADB}
-      type: none
-      # o: bind
-      # device: ${PATH_HOST_VOL_MARIADB}
 
 #custom network
 networks:
