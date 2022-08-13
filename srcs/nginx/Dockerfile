@@ -1,8 +1,11 @@
-FROM alpine:3.16.1
+FROM alpine:3.13.4
 
 ARG SSL_PATH=/etc/ssl
 
 RUN apk --no-cache upgrade && apk add nginx openssl
+
+RUN	mkdir /run/nginx &&	\
+	chown nginx:nginx /run/nginx
 
 WORKDIR $SSL_PATH
 RUN openssl genrsa -out private/ssl.key 2048; \
@@ -14,7 +17,8 @@ RUN openssl genrsa -out private/ssl.key 2048; \
 
 COPY ./default.conf /etc/nginx/http.d/default.conf
 
-COPY ./run.sh /scripts/
-RUN chmod -R 755 /scripts
+WORKDIR /
+COPY ./run.sh /
+RUN chmod +x /run.sh
 
-ENTRYPOINT ["/scripts/run.sh"]
+ENTRYPOINT ["/run.sh"]

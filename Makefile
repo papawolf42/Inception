@@ -6,7 +6,7 @@
 #    By: gunkim <gunkim@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/11 22:17:00 by gunkim            #+#    #+#              #
-#    Updated: 2022/08/12 23:27:24 by gunkim           ###   ########.fr        #
+#    Updated: 2022/08/13 21:46:57 by gunkim           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ DIR_VOLUME	:= $(PATH_HOST_VOL_MARIADB) $(PATH_HOST_VOL_WORDPRESS)
 
 
 
-.PHONY: all clean fclean
+.PHONY: all clean fclean re
 
 all : $(NAME)
 
@@ -43,6 +43,7 @@ fclean:
 	docker volume rm vol_mariadb
 	docker volume rm vol_wordpress
 
+re: fclean all
 
 
 .PHONY: ls
@@ -52,3 +53,9 @@ ls :
 	@docker ps -a
 	@echo $(YELLOW)"\n[docker images]"$(END_COL)
 	@docker images ls
+	@echo $(YELLOW)"\n[image list]"$(END_COL)
+	@docker image ls
+	@echo $(YELLOW)"\n[volume list]"$(END_COL)
+	@docker volume ls
+	@echo $(YELLOW)"\n[network list]"$(END_COL)
+	@docker network ls

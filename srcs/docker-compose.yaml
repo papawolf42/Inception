@@ -2,23 +2,23 @@ version: "3.9"
 
 services:
 
-  # mariadb:
-  #   container_name: mariadb
-  #   image: mariadb
-  #   build:
-  #     context: ./mariadb
-  #   expose:
-  #     - 3306
-  #   networks:
-  #     - my_net
-  #   volumes:
-  #     - vol_mariadb:${DB_PATH}
-  #   restart: always
-  #   environment:
-  #     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-  #     - WORDPRESS_DATABASE=${WORDPRESS_DATABASE}
-  #     - WORDPRESS_DATABASE_USER=${WORDPRESS_DATABASE_USER}
-  #     - WORDPRESS_DATABASE_PASS=${WORDPRESS_DATABASE_PASS}
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    build:
+      context: ./mariadb
+    expose:
+      - 3306
+    networks:
+      - my_net
+    volumes:
+      - vol_mariadb:${DB_PATH}
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - WORDPRESS_DATABASE=${WORDPRESS_DATABASE}
+      - WORDPRESS_DATABASE_USER=${WORDPRESS_DATABASE_USER}
+      - WORDPRESS_DATABASE_PASS=${WORDPRESS_DATABASE_PASS}
 
   nginx:
     container_name: nginx
@@ -30,14 +30,31 @@ services:
     networks:
       - my_net
     volumes:
+      - vol_wordpress:/var/www/html
+    restart: always
+
+  wordpress:
+    container_name: wordpress
+    image: wordpress
+    depends_on:
+      - mariadb
+      - nginx
+    build:
+      context: ./wordpress
+    networks:
+      - my_net
+    expose:
+      - 9000
+    volumes:
       - vol_wordpress:${WP_PATH}
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - WORDPRESS_DATABASE=${WORDPRESS_DATABASE}
-      - WORDPRESS_DATABASE_USER=${WORDPRESS_DATABASE_USER}
-      - WORDPRESS_DATABASE_PASS=${WORDPRESS_DATABASE_PASS}
-  # wordpress:
+      - WP_PATH=${WP_PATH}
+      - WORDPRESS_URL=${WORDPRESS_URL}
+      - WORDPRESS_SITE_TITLE=${WORDPRESS_SITE_TITLE}
+      - WORDPRESS_ADMIN_NAME=${WORDPRESS_ADMIN_NAME}
+      - WORDPRESS_ADMIN_EMAIL=${WORDPRESS_ADMIN_EMAIL}
+      - WORDPRESS_ADMIN_PASSWORD=${WORDPRESS_ADMIN_PASSWORD}
 
 
 #docker volume
